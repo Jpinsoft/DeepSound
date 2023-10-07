@@ -3,7 +3,9 @@
 DeepSound is a steganography tool and audio converter that hides secret data into audio files. 
 The application also enables you to extract secret files directly from audio files or audio CD tracks. 
 
-## Download DeepSound:
+## Download DeepSound
+
+<a href="https://github.com/Jpinsoft/DeepSound/releases/download/v2.0.0.32372/DeepSoundSetup.msi">Download DeepSound release 2.0 (November 2015)</a> and install DeepSound app
 
 
 ## Features/Purpose
@@ -18,14 +20,17 @@ The application also enables you to extract secret files directly from audio fil
 
 <div align="center">
 
-#### DeepSound: Blue Theme
 <picture>
-- <img alt="screenshot01" width="480" src="http://jpinsoft.net/Resources/DeepSound/DeepSoundBlue.png">
+<img alt="screenshot01" width="480" src="https://github.com/Jpinsoft/DeepSound/assets/28184960/59478086-1eb9-402a-b4cb-c3f96239cdeb">
+</picture>
+
+#### DeepSound: Blue Theme
+
+
+<picture>
+<img alt="screenshot01" width="480" src="https://github.com/Jpinsoft/DeepSound/assets/28184960/56d78276-e14b-45c5-a15d-b151a5696300">
 </picture>
 
 #### DeepSound: Dark Theme
-<picture>
-<img alt="screenshot01" width="480" src="http://jpinsoft.net/Resources/DeepSound/DeepSoundDark.png">
-</picture>
 
 </div>
