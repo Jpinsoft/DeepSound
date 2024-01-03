@@ -6,7 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7648784F-78F9-4028-A1AB-77E8AE0B0772}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
-		CONTRIBUTE.md = CONTRIBUTE.md
+		CONTRIBUTING.md = CONTRIBUTING.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{52B73B33-769E-4AEC-ADEA-CCDFFB7E8F6D}"
