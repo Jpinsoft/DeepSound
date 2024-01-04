@@ -5,8 +5,14 @@ The application also enables you to extract secret files directly from audio fil
 
 ## Download DeepSound
 
-<a href="https://github.com/Jpinsoft/DeepSound/releases/download/v2.0.0.32372/DeepSoundSetup.msi">Download DeepSound release 2.0 (November 2015)</a> and install DeepSound app
+<a href="https://github.com/Jpinsoft/DeepSound/releases/download/v2.1.2401.03/DeepSound_2_1.msi">Download DeepSound release 2.1 (January 2024)</a> and install DeepSound app
 
+#### What's new in DeepSound 2.1
+ - upgrade to .NET Framework 4.8 
+ - more secured secret files format + unicode password
+ - Converter module: added audio CD ripper (CDA files)
+ - speed up processing carrier audio files (using temp files)
+ - migration to github
 
 ## Features/Purpose
 
