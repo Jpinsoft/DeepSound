@@ -5,14 +5,16 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7648784F-78F9-4028-A1AB-77E8AE0B0772}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
 		CONTRIBUTING.md = CONTRIBUTING.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{52B73B33-769E-4AEC-ADEA-CCDFFB7E8F6D}"
 	ProjectSection(SolutionItems) = preProject
 		Files\DeepSoundProductInfo.xml = Files\DeepSoundProductInfo.xml
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Localization", "Localization", "{A0C82E80-58A5-4D74-80C9-01269643A070}"
 EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
