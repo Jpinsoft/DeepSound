@@ -1,4 +1,4 @@
-name: Xcode - Build and Analyze
+name: .NET Build and Test
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build and analyze default scheme using xcodebuild command
+    name: Build and test .NET solution
     runs-on: macos-latest
     permissions:
       contents: read
@@ -16,41 +16,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Set Default Scheme
-        id: set-scheme
-        run: |
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo "$scheme_list" | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['project']['targets'][0]")
-          if [ -z "$default" ]; then
-            echo "Error: No default scheme found"
-            exit 1
-          fi
-          echo "scheme=$default" >> $GITHUB_OUTPUT
-          echo Using default scheme: "$default"
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+      
+      - name: Restore dependencies
+        run: dotnet restore DeepSoundMac.sln
+      
       - name: Build
-        env:
-          scheme: ${{ steps.set-scheme.outputs.scheme }}
-        run: |
-          # Detect workspace or project file
-          workspace_file=$(ls -A | grep -i '\.xcworkspace$' || true)
-          project_file=$(ls -A | grep -i '\.xcodeproj$' || true)
-          
-          if [ -n "$workspace_file" ]; then
-            filetype_parameter="workspace"
-            file_to_build="$workspace_file"
-          elif [ -n "$project_file" ]; then
-            filetype_parameter="project"
-            file_to_build="$project_file"
-          else
-            echo "Error: No Xcode workspace or project file found"
-            exit 1
-          fi
-          
-          file_to_build=$(echo "$file_to_build" | awk '{$1=$1;print}')
-          
-          # Check if xcpretty is available, otherwise use plain output
-          if command -v xcpretty &> /dev/null; then
-            xcodebuild clean build analyze -scheme "$scheme" -"$filetype_parameter" "$file_to_build" | xcpretty && exit ${PIPESTATUS[0]}
-          else
-            xcodebuild clean build analyze -scheme "$scheme" -"$filetype_parameter" "$file_to_build"
-          fi
+        run: dotnet build DeepSoundMac.sln --configuration Release --no-restore
+      
+      - name: Test
+        run: dotnet test DeepSoundMac.sln --configuration Release --no-build --verbosity normal
