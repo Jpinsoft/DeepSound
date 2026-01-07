@@ -12,6 +12,7 @@
 bin/
 obj/
 out/
+publish/
 
 # NuGet packages
 packages/

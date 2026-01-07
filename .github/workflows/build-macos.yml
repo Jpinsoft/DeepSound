@@ -3,6 +3,8 @@ name: .NET Build and Test
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ "main" ]
 
@@ -11,7 +13,7 @@ jobs:
     name: Build and test .NET solution
     runs-on: macos-latest
     permissions:
-      contents: read
+      contents: write
 
     steps:
       - name: Checkout
@@ -30,3 +32,43 @@ jobs:
       
       - name: Test
         run: dotnet test DeepSoundMac.sln --configuration Release --no-build --verbosity normal
+      
+      - name: Publish for macOS ARM64 (Apple Silicon)
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          dotnet publish src/DeepSoundMac.App/DeepSoundMac.App.csproj \
+            -c Release \
+            -r osx-arm64 \
+            --self-contained \
+            -o publish/osx-arm64
+      
+      - name: Publish for macOS x64 (Intel)
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          dotnet publish src/DeepSoundMac.App/DeepSoundMac.App.csproj \
+            -c Release \
+            -r osx-x64 \
+            --self-contained \
+            -o publish/osx-x64
+      
+      - name: Create ZIP archives
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          cd publish/osx-arm64
+          zip -r ../../DeepSoundMac-macOS-arm64.zip .
+          cd ../osx-x64
+          zip -r ../../DeepSoundMac-macOS-x64.zip .
+          cd ../..
+      
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            DeepSoundMac-macOS-arm64.zip
+            DeepSoundMac-macOS-x64.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

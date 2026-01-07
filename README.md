@@ -27,9 +27,28 @@ The application also enables you to extract secret files directly from audio fil
 
 ## Installation
 
+### Download Pre-built Release
+
+Download the latest pre-built macOS application from the [Releases](https://github.com/MeAmCat/DeepSound-Mac/releases) page:
+- **DeepSoundMac-macOS-arm64.zip** for Apple Silicon Macs (M1, M2, M3, etc.)
+- **DeepSoundMac-macOS-x64.zip** for Intel Macs
+
+After downloading:
+1. Extract the ZIP file
+2. Open Terminal and navigate to the extracted folder
+3. Run the application:
+   ```bash
+   ./DeepSoundMac.App
+   ```
+   Or make it executable first if needed:
+   ```bash
+   chmod +x DeepSoundMac.App
+   ./DeepSoundMac.App
+   ```
+
 ### Prerequisites
 
-- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) or later
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) or later (only required for building from source)
 
 ### Build from Source
 
@@ -108,6 +127,20 @@ DeepSound-Mac/
 │       └── Steganography/          # Steganography engine
 ├── Localization/                   # Localization resources
 └── Files/                          # Product information
+```
+
+## Releases
+
+This project uses GitHub Actions to automatically build and release macOS applications. When a version tag is pushed (e.g., `v1.0.0`), the workflow will:
+1. Build and test the application
+2. Publish for both macOS ARM64 (Apple Silicon) and x64 (Intel)
+3. Create ZIP archives of the builds
+4. Automatically create a GitHub release with the artifacts
+
+To create a new release:
+```bash
+git tag v1.0.0
+git push origin v1.0.0
 ```
 
 ## Contributing
