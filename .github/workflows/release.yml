@@ -1,0 +1,88 @@
+name: Build & Release macOS App
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        arch: [osx-arm64, osx-x64]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build app
+        run: |
+          dotnet publish src/DeepSoundMac.App/DeepSoundMac.App.csproj \
+            -c Release \
+            -r ${{ matrix.arch }} \
+            --self-contained \
+            -o publish/output
+
+      - name: Create app bundle
+        run: |
+          set -e
+          mkdir -p publish/DeepSound.app/Contents/MacOS
+          cp -r publish/output/* publish/DeepSound.app/Contents/MacOS/
+
+          # Create Info.plist
+          cat > publish/DeepSound.app/Contents/Info.plist << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" \
+            "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>CFBundleExecutable</key>
+              <string>DeepSoundMac.App</string>
+              <key>CFBundleIdentifier</key>
+              <string>com.meamcat.deepsound</string>
+              <key>CFBundleName</key>
+              <string>DeepSound</string>
+              <key>CFBundlePackageType</key>
+              <string>APPL</string>
+              <key>CFBundleShortVersionString</key>
+              <string>1.0</string>
+              <key>CFBundleVersion</key>
+              <string>1</string>
+          </dict>
+          </plist>
+          EOF
+
+      - name: Package app
+        run: |
+          set -e
+          cd publish
+          if [ ! -d "DeepSound.app" ]; then
+            echo "Error: DeepSound.app not found in publish directory"
+            exit 1
+          fi
+          ditto -c -k --sequesterRsrc --keepParent \
+            "DeepSound.app" "DeepSound-${{ matrix.arch }}.zip"
+          if [ ! -s "DeepSound-${{ matrix.arch }}.zip" ]; then
+            echo "Error: DeepSound-${{ matrix.arch }}.zip" \
+              "was not created or is empty"
+            exit 1
+          fi
+          mv DeepSound-${{ matrix.arch }}.zip "$GITHUB_WORKSPACE"/
+
+      - name: Create release
+        uses: >-
+          softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b
+        with:
+          generate_release_notes: true
+          files: DeepSound-${{ matrix.arch }}.zip
