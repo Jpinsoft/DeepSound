@@ -1,6 +1,26 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs/DeepSound/FileContentIndex/a392781f-b6b2-4038-9869-6139192f44f0.vsidx
+# Visual Studio
+/.vs/
 *.vsidx
+*.suo
+*.user
+
+# Build outputs
+bin/
+obj/
+out/
+
+# NuGet packages
+packages/
+*.nupkg
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+*.swp
+*.swo

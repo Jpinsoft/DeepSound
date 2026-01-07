@@ -1,46 +1,126 @@
-# DeepSound
+# DeepSound for macOS
 
-DeepSound is a steganography tool and audio converter that hides secret data into audio files. 
-The application also enables you to extract secret files directly from audio files or audio CD tracks. 
+DeepSound is a cross-platform steganography tool and audio converter that hides secret data into audio files. 
+The application also enables you to extract secret files directly from audio files.
 
-## Download DeepSound
+**This is the macOS-compatible port** of the original [DeepSound](https://github.com/Jpinsoft/DeepSound) Windows application, built with .NET 9 and Avalonia UI for cross-platform compatibility.
 
-<a href="https://github.com/Jpinsoft/DeepSound/releases/download/v2.2.2404.04/DeepSound_2_2_2404_14_Setup.msi">Download DeepSound release 2.2 (April 2024)</a> and install DeepSound app
+## Features
 
-#### What's new in DeepSound 2.2
-- FIXED BUG: application crash during processing read-only file
-- ENHANCEMENT: Converter module error handling
-- FIXED BUG: incorrect cancellation of reading audio CD
+- **Audio Steganography**: Hide secret files inside WAV audio files using LSB (Least Significant Bit) encoding
+- **AES-256 Encryption**: Optionally encrypt hidden files with a password for enhanced security
+- **Cross-Platform**: Runs on macOS, Windows, and Linux
+- **Modern UI**: Built with Avalonia UI for a native look and feel
 
-#### What's new in DeepSound 2.1
- - upgrade to .NET Framework 4.8 
- - more secured secret files format + unicode password
- - Converter module: added audio CD ripper (CDA files)
- - speed up processing carrier audio files (using temp files)
- - migration to github
+## Supported Formats
 
-## Features/Purpose
-
-- DeepSound might be used as copyright marking software for wave, flac, wma, ape, and audio CD. 
-- DeepSound also support encrypting secret files using AES-256(Advanced Encryption Standard) to improve data protection.
-- The application additionally contains an easy to use Audio Converter Module that can encode several audio formats (FLAC, MP3, WMA, WAV, APE, CDA) to others (FLAC, MP3, WAV, APE). 
- 
+- **Carrier Files**: WAV (PCM audio)
+- **Secret Files**: Any file type
 
 ## Screenshots
 
 <div align="center">
-
 <picture>
-<img alt="screenshot01" width="480" src="https://github.com/Jpinsoft/DeepSound/assets/28184960/59478086-1eb9-402a-b4cb-c3f96239cdeb">
+<img alt="DeepSound for macOS" width="600" src="https://github.com/Jpinsoft/DeepSound/assets/28184960/59478086-1eb9-402a-b4cb-c3f96239cdeb">
 </picture>
-
-#### DeepSound: Blue Theme
-
-
-<picture>
-<img alt="screenshot01" width="480" src="https://github.com/Jpinsoft/DeepSound/assets/28184960/56d78276-e14b-45c5-a15d-b151a5696300">
-</picture>
-
-#### DeepSound: Dark Theme
-
 </div>
+
+## Installation
+
+### Prerequisites
+
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0) or later
+
+### Build from Source
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/MeAmCat/DeepSound-Mac.git
+   cd DeepSound-Mac
+   ```
+
+2. Build the application:
+   ```bash
+   dotnet build DeepSoundMac.sln
+   ```
+
+3. Run the application:
+   ```bash
+   dotnet run --project src/DeepSoundMac.App/DeepSoundMac.App.csproj
+   ```
+
+### Publish as Standalone Application
+
+To create a standalone macOS application:
+
+```bash
+# For macOS ARM64 (Apple Silicon)
+dotnet publish src/DeepSoundMac.App/DeepSoundMac.App.csproj -c Release -r osx-arm64 --self-contained
+
+# For macOS x64 (Intel)
+dotnet publish src/DeepSoundMac.App/DeepSoundMac.App.csproj -c Release -r osx-x64 --self-contained
+
+# For Windows
+dotnet publish src/DeepSoundMac.App/DeepSoundMac.App.csproj -c Release -r win-x64 --self-contained
+
+# For Linux
+dotnet publish src/DeepSoundMac.App/DeepSoundMac.App.csproj -c Release -r linux-x64 --self-contained
+```
+
+## Usage
+
+### Hiding Files (Encoding)
+
+1. Open the application
+2. Click "Browse..." to select a WAV audio file as the carrier
+3. Add secret files you want to hide using the "Add Files..." button
+4. (Optional) Enable encryption and enter a password
+5. Select an output directory
+6. Click "Encode and Save" to create the output file
+
+### Extracting Files (Decoding)
+
+1. Open the application
+2. Click "Browse..." to select a WAV file containing hidden data
+3. If the file is encrypted, enter the password
+4. Click "Extract Hidden Files"
+5. Click "Save Extracted Files" to save the extracted files
+
+## Technical Details
+
+- **Steganography Method**: LSB (Least Significant Bit) encoding - modifies the least significant bit of each audio sample to store hidden data
+- **Encryption**: AES-256 with PBKDF2 key derivation (100,000 iterations, SHA-256)
+- **Maximum Capacity**: Approximately 1 bit per sample (e.g., a 44.1kHz stereo WAV file can hide about 5.5KB per second of audio)
+
+## Project Structure
+
+```
+DeepSound-Mac/
+├── src/
+│   ├── DeepSoundMac.App/          # Avalonia UI Application
+│   │   ├── Views/                  # XAML views
+│   │   ├── ViewModels/             # MVVM view models
+│   │   └── Assets/                 # Application resources
+│   └── DeepSoundMac.Core/          # Core library
+│       ├── Audio/                  # Audio file handling
+│       ├── Encryption/             # AES encryption
+│       ├── Models/                 # Data models
+│       └── Steganography/          # Steganography engine
+├── Localization/                   # Localization resources
+└── Files/                          # Product information
+```
+
+## Contributing
+
+If you find DeepSound useful and would like to improve this app, you are welcome. 
+The GitHub Issue tracker is the preferred channel for bug reports and improvement requests.
+
+## License
+
+This project is based on the original [DeepSound](https://github.com/Jpinsoft/DeepSound) project.
+
+## Acknowledgments
+
+- Original DeepSound application by [Jpinsoft](https://github.com/Jpinsoft)
+- Built with [Avalonia UI](https://avaloniaui.net/) for cross-platform support
+- Uses [CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/) for MVVM patterns

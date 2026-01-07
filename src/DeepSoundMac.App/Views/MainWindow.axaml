@@ -1,0 +1,212 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DeepSoundMac.App.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="650"
+        x:Class="DeepSoundMac.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="DeepSound - Audio Steganography"
+        Width="900" Height="650"
+        MinWidth="700" MinHeight="500">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <Border Grid.Row="0" Background="#2C3E50" Padding="20">
+            <StackPanel>
+                <TextBlock Text="DeepSound" FontSize="28" FontWeight="Bold" Foreground="White"/>
+                <TextBlock Text="Hide secret files in audio files using steganography" 
+                           FontSize="14" Foreground="#BDC3C7" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" Padding="20">
+            <StackPanel Spacing="20">
+                <!-- Carrier File Section -->
+                <Border Background="#F8F9FA" CornerRadius="8" Padding="15">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="📁 Carrier Audio File" FontWeight="Bold" FontSize="16"/>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBox Grid.Column="0" 
+                                     Text="{Binding CarrierFilePath}" 
+                                     Watermark="Select a WAV audio file..."
+                                     IsReadOnly="True"/>
+                            <Button Grid.Column="1" Content="Browse..." 
+                                    Margin="10,0,0,0"
+                                    Click="BrowseCarrierFile_Click"/>
+                        </Grid>
+                        
+                        <StackPanel Orientation="Horizontal" Spacing="20" IsVisible="{Binding CarrierFilePath, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                            <TextBlock>
+                                <Run Text="Capacity: "/>
+                                <Run Text="{Binding MaxCapacityBytes, StringFormat='{}{0:N0} bytes'}" FontWeight="Bold"/>
+                            </TextBlock>
+                            <TextBlock IsVisible="{Binding HasHiddenData}" Foreground="Green">
+                                <Run Text="✓ Contains hidden data"/>
+                            </TextBlock>
+                            <TextBlock IsVisible="{Binding HiddenDataIsEncrypted}" Foreground="Orange"
+                                       Text="(encrypted)"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Tabs for Encode/Decode -->
+                <TabControl>
+                    <!-- Encode Tab -->
+                    <TabItem Header="🔒 Hide Files (Encode)">
+                        <StackPanel Spacing="15" Margin="0,15,0,0">
+                            <!-- Secret Files List -->
+                            <Border Background="#F8F9FA" CornerRadius="8" Padding="15" MinHeight="150">
+                                <StackPanel Spacing="10">
+                                    <Grid ColumnDefinitions="*,Auto,Auto">
+                                        <TextBlock Grid.Column="0" Text="📎 Secret Files to Hide" FontWeight="Bold" FontSize="14"/>
+                                        <Button Grid.Column="1" Content="Add Files..." Click="AddSecretFiles_Click" Margin="0,0,10,0"/>
+                                        <Button Grid.Column="2" Content="Clear All" Command="{Binding ClearSecretFilesCommand}"/>
+                                    </Grid>
+                                    
+                                    <ListBox ItemsSource="{Binding SecretFiles}" MinHeight="100" MaxHeight="200">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate DataType="vm:SecretFileViewModel">
+                                                <Grid ColumnDefinitions="*,Auto,Auto" Margin="5">
+                                                    <TextBlock Grid.Column="0" Text="{Binding FileName}" VerticalAlignment="Center"/>
+                                                    <TextBlock Grid.Column="1" Text="{Binding FileSizeFormatted}" 
+                                                               Foreground="Gray" Margin="10,0" VerticalAlignment="Center"/>
+                                                    <Button Grid.Column="2" Content="✕" Padding="5,2"
+                                                            Command="{Binding $parent[ListBox].((vm:MainWindowViewModel)DataContext).RemoveSecretFileCommand}"
+                                                            CommandParameter="{Binding}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    
+                                    <TextBlock IsVisible="{Binding IsSecretFilesEmpty}" 
+                                               Text="Drag and drop files here or click 'Add Files...'" 
+                                               Foreground="Gray" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Capacity Bar -->
+                            <StackPanel Spacing="5" IsVisible="{Binding CarrierFilePath, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBlock Grid.Column="0" Text="Space Used"/>
+                                    <TextBlock Grid.Column="1">
+                                        <Run Text="{Binding UsedCapacityBytes, StringFormat='{}{0:N0}'}"/>
+                                        <Run Text=" / "/>
+                                        <Run Text="{Binding MaxCapacityBytes, StringFormat='{}{0:N0}'}"/>
+                                        <Run Text=" bytes"/>
+                                    </TextBlock>
+                                </Grid>
+                                <ProgressBar Value="{Binding CapacityPercentage}" Maximum="100" Height="10"/>
+                            </StackPanel>
+
+                            <!-- Encryption Options -->
+                            <Border Background="#FFF3CD" CornerRadius="8" Padding="15">
+                                <StackPanel Spacing="10">
+                                    <CheckBox Content="🔐 Encrypt with AES-256" IsChecked="{Binding UseEncryption}"/>
+                                    <TextBox Text="{Binding Password}" 
+                                             PasswordChar="•"
+                                             Watermark="Enter password..."
+                                             IsVisible="{Binding UseEncryption}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Output Directory -->
+                            <Border Background="#F8F9FA" CornerRadius="8" Padding="15">
+                                <StackPanel Spacing="10">
+                                    <TextBlock Text="📂 Output Directory" FontWeight="Bold"/>
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <TextBox Grid.Column="0" Text="{Binding OutputDirectory}" IsReadOnly="True"/>
+                                        <Button Grid.Column="1" Content="Browse..." Margin="10,0,0,0"
+                                                Click="BrowseOutputDirectory_Click"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Encode Button -->
+                            <Button Content="🔒 Encode and Save" 
+                                    Command="{Binding EncodeCommand}"
+                                    HorizontalAlignment="Stretch"
+                                    FontSize="16"
+                                    Padding="20,15"
+                                    Background="#27AE60"
+                                    Foreground="White"/>
+                        </StackPanel>
+                    </TabItem>
+
+                    <!-- Decode Tab -->
+                    <TabItem Header="🔓 Extract Files (Decode)">
+                        <StackPanel Spacing="15" Margin="0,15,0,0">
+                            <TextBlock IsVisible="{Binding !HasHiddenData}" 
+                                       Text="No hidden data detected in the current file. Open a file containing hidden data to extract."
+                                       Foreground="Gray" TextWrapping="Wrap"/>
+                            
+                            <StackPanel Spacing="15" IsVisible="{Binding HasHiddenData}">
+                                <!-- Password for Decryption -->
+                                <Border Background="#FFF3CD" CornerRadius="8" Padding="15" 
+                                        IsVisible="{Binding HiddenDataIsEncrypted}">
+                                    <StackPanel Spacing="10">
+                                        <TextBlock Text="🔐 This file is encrypted. Enter password to extract:" FontWeight="Bold"/>
+                                        <TextBox Text="{Binding Password}" 
+                                                 PasswordChar="•"
+                                                 Watermark="Enter decryption password..."/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Extract Button -->
+                                <Button Content="🔓 Extract Hidden Files" 
+                                        Command="{Binding DecodeCommand}"
+                                        HorizontalAlignment="Stretch"
+                                        FontSize="16"
+                                        Padding="20,15"
+                                        Background="#3498DB"
+                                        Foreground="White"/>
+
+                                <!-- Extracted Files List -->
+                                <Border Background="#F8F9FA" CornerRadius="8" Padding="15" 
+                                        IsVisible="{Binding HasExtractedFiles}">
+                                    <StackPanel Spacing="10">
+                                        <TextBlock Text="📄 Extracted Files" FontWeight="Bold" FontSize="14"/>
+                                        <ListBox ItemsSource="{Binding ExtractedFiles}" MinHeight="100">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate DataType="vm:SecretFileViewModel">
+                                                    <Grid ColumnDefinitions="*,Auto" Margin="5">
+                                                        <TextBlock Grid.Column="0" Text="{Binding FileName}" VerticalAlignment="Center"/>
+                                                        <TextBlock Grid.Column="1" Text="{Binding FileSizeFormatted}" 
+                                                                   Foreground="Gray" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        
+                                        <Button Content="💾 Save Extracted Files" 
+                                                Command="{Binding SaveExtractedFilesCommand}"
+                                                HorizontalAlignment="Stretch"
+                                                Background="#9B59B6"
+                                                Foreground="White"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="2" Background="#34495E" Padding="15,10">
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" Foreground="White"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" IsVisible="{Binding IsProcessing}">
+                    <TextBlock Text="Processing..." Foreground="#F39C12" Margin="0,0,10,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+
+</Window>
