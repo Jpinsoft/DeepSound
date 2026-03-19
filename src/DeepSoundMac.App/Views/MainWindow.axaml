@@ -62,7 +62,11 @@
                     <TabItem Header="🔒 Hide Files (Encode)">
                         <StackPanel Spacing="15" Margin="0,15,0,0">
                             <!-- Secret Files List -->
-                            <Border Background="#F8F9FA" CornerRadius="8" Padding="15" MinHeight="150">
+                            <Border Background="#F8F9FA" CornerRadius="8" Padding="15" MinHeight="150"
+                                    DragDrop.AllowDrop="True"
+                                    Drop="OnSecretFilesDrop"
+                                    DragDrop.DragEnter="OnDragEnter"
+                                    DragDrop.DragLeave="OnDragLeave">
                                 <StackPanel Spacing="10">
                                     <Grid ColumnDefinitions="*,Auto,Auto">
                                         <TextBlock Grid.Column="0" Text="📎 Secret Files to Hide" FontWeight="Bold" FontSize="14"/>

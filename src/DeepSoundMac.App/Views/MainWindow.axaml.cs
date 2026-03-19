@@ -1,5 +1,7 @@
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using DeepSoundMac.App.ViewModels;
 
@@ -64,5 +66,35 @@ public partial class MainWindow : Window
         {
             vm.OutputDirectory = folders[0].Path.LocalPath;
         }
+    }
+
+    private void OnSecretFilesDrop(object? sender, DragEventArgs e)
+    {
+        if (sender is Border border)
+            border.Background = Brushes.Transparent;
+
+        if (DataContext is not MainWindowViewModel vm)
+            return;
+
+        var files = e.Data.GetFiles();
+        if (files == null)
+            return;
+
+        foreach (var file in files)
+        {
+            vm.AddSecretFileCommand.Execute(file.Path.LocalPath);
+        }
+    }
+
+    private void OnDragEnter(object? sender, DragEventArgs e)
+    {
+        if (sender is Border border && e.Data.Contains(DataFormats.Files))
+            border.Background = new SolidColorBrush(Color.FromArgb(30, 39, 174, 96));
+    }
+
+    private void OnDragLeave(object? sender, RoutedEventArgs e)
+    {
+        if (sender is Border border)
+            border.Background = new SolidColorBrush(Color.Parse("#F8F9FA"));
     }
 }
