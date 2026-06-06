@@ -1,0 +1,65 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <PlatformTarget>x86</PlatformTarget>
+    <AssemblyVersion>1.0.2606.06</AssemblyVersion>
+    <FileVersion>1.0.2606.06</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="flac.exe" />
+    <None Remove="lame_enc.dll" />
+    <None Remove="MACDll.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="flac.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lame_enc.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MACDll.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Common">
+      <HintPath>..\Files\Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Jospin.MediaLib">
+      <HintPath>..\Files\Jospin.MediaLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Ripper">
+      <HintPath>..\Files\Ripper.dll</HintPath>
+    </Reference>
+    <Reference Include="Steganography">
+      <HintPath>..\Files\Steganography.dll</HintPath>
+    </Reference>
+    <Reference Include="Utils">
+      <HintPath>..\Files\Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFUtils">
+      <HintPath>..\Files\WPFUtils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

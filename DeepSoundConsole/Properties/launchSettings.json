@@ -1,0 +1,20 @@
+{
+  "profiles": {
+    "DSConsole-Analyze": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\DS\\dsTest1Enc.wav\" analyze"
+    },
+    "DSConsole-Decode": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\DS\\dsTest1Enc.wav\" decode -o \"D:\\DS\\Out\""
+    },
+    "DSConsole-Encode": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\DS\\dsTest1Enc.wav\" encode -s \"D:\\DS\\Secret1.bmp\" \"D:\\DS\\Secret2.png\" -o \"D:\\DS\\Out\" -p \"****\" -f \"APE\""
+    },
+    "DSConsole-Clear": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}
