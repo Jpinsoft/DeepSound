@@ -1,4 +1,5 @@
 ﻿using DeepSoundConsole.ConsoleHelpers;
+using Jospin.DeepSound.Common.Helpers;
 using Jospin.DeepSound.Common.Modules;
 using Jospin.DeepSound.Common.TempWav;
 using Jospin.DeepSound.Steganography.Exceptions;
@@ -37,7 +38,6 @@ namespace DeepSoundConsole.ConsoleHandlers
 
         public void Handle(ParseResult parseResult)
         {
-            //  string carrierFile, string[] secretFiles, string? outputFolder = null, string? pass = null, string outpuFormat = "wav")
             string? carrierFile = parseResult.GetValue<string>(CommandExtensions.InputFileArgument);
             string? outputFolder = parseResult.GetValue<string>(CommandExtensions.OutDirOpt);
             string? pass = parseResult.GetValue<string>(CommandExtensions.PassOpt);
@@ -50,7 +50,7 @@ namespace DeepSoundConsole.ConsoleHandlers
             Console.WriteLine();
 
             coder.Encrypt = false;
-            outputFolder = string.IsNullOrEmpty(outputFolder) ? Environment.CurrentDirectory : outputFolder;
+            outputFolder = string.IsNullOrEmpty(outputFolder) ? DSHelpers.GetDeepSoundFolder() : outputFolder;
 
             if (!TempWavFactory.Instance.SupportedOutputFormats.Any(_ => string.Compare(_.Item1, outpuFormat, true) == 0))
             {
@@ -73,12 +73,6 @@ namespace DeepSoundConsole.ConsoleHandlers
 
             AddSecretFiles(secretFiles);
 
-            // MP3 -coder.BaseFileInfo.FileName -  D:\Moje dokumenty\DeepSound\TEMP\F8DA91D892BF424BFA786BE1BC635FE1B795D11C.tmp
-            // WAV - D:\DS\dsTest1.wav
-            // APE - D:\Moje dokumenty\DeepSound\TEMP\4B2570565933300D8AFBCE30A9F8FF0E9F35417B.tmp
-            // FLAC - D:\Moje dokumenty\DeepSound\TEMP\87956A3409012D7D72169CCE1A172A452645383E.tmp
-
-            // OutputPath - musi byt vzdy wav az nasledne output ext, takto netreba riesit tmp priponu
             coder.EncoderOutputFilePath = Path.Combine(outputFolder, Path.ChangeExtension(Path.GetFileName(carrierFile), "wav"));
             coder.EncoderOutputFilePath = FileUtils.GetUniqueFileNameWithoutExtension(coder.EncoderOutputFilePath);
 
@@ -95,7 +89,7 @@ namespace DeepSoundConsole.ConsoleHandlers
         }
 
 
-        private void AddSecretFiles(string[] files) // Step2
+        private void AddSecretFiles(string[] files)
         {
             foreach (string fileName in files)
             {

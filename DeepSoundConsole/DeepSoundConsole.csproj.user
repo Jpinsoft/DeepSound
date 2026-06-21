@@ -4,6 +4,7 @@
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup>
-    <ActiveDebugProfile>DSConsole-Analyze</ActiveDebugProfile>
+    <ActiveDebugProfile>DSConsole-Encode</ActiveDebugProfile>
+    <_LastSelectedProfileId>D:\Programovanie\GITHUB\DeepSound\DeepSoundConsole\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
   </PropertyGroup>
 </Project>

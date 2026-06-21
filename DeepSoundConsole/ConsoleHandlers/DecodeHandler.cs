@@ -65,7 +65,6 @@ namespace DeepSoundConsole.ConsoleHandlers
             Console.WriteLine("Decoding files...");
             coder.DecodeFilesFromWav();
 
-            ConsoleWriter.WriteLineEnd();
             Console.WriteLine();
             coder.SecretFilesInfoItems.ForEach(_ => Console.WriteLine($"- {Path.Combine(coder.DecoderFolder, _.FileName)} ({_.FileSize} bytes)"));
             Console.WriteLine();

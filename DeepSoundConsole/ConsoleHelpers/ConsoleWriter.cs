@@ -39,8 +39,9 @@ namespace DeepSoundConsole.ConsoleHelpers
         public static void WriteLineAppInfo()
         {
             Console.WriteLine("=================================================================================");
-            Console.WriteLine($"DeepSoundConsole - Command-line DeepSoundConsole encoder/decoder version {Assembly.GetExecutingAssembly()?.GetName()?.Version}");
-            Console.WriteLine("Copyright © Jozef Bátora 2008-2026, https://github.com/Jpinsoft/DeepSound");
+            Console.WriteLine($"DeepSoundConsole - Command-line DeepSound encoder/decoder version {Assembly.GetExecutingAssembly()?.GetName()?.Version}");
+            Console.WriteLine("DeepSoundConsole.exe is Licenced under GPLv3 licence,");
+            Console.WriteLine("Author Jozef Bátora, https://github.com/Jpinsoft/DeepSound");
             Console.WriteLine("=================================================================================");
         }
     }

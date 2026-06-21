@@ -30,7 +30,6 @@ namespace DeepSoundConsole.ConsoleHandlers
 
         public void Handle(ParseResult parseResult)
         {
-            // string carrierFilesFolder, bool recursive = false
             string? carrierFilesFolder = parseResult.GetValue<string>(CommandExtensions.InputFileArgument);
             bool recursive = parseResult.GetValue<bool>(CommandExtensions.RecursiveOpt);
 
