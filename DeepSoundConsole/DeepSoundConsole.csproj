@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <PlatformTarget>x86</PlatformTarget>
-    <AssemblyVersion>1.0.2606.21</AssemblyVersion>
-    <FileVersion>1.0.2606.21</FileVersion>
+    <AssemblyVersion>1.0.2606.28</AssemblyVersion>
+    <FileVersion>1.0.2606.28</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
