@@ -5,13 +5,14 @@ The application also enables you to extract secret files directly from audio fil
 
 ## Download DeepSound
 
-<a href="https://github.com/Jpinsoft/DeepSound/releases/download/v2.3.2606.28/DeepSound_2_3_1_Setup.msi">Download DeepSound release 2.3 (June 2026)</a> and install DeepSound app
+<a href="https://github.com/Jpinsoft/DeepSound/releases/download/v2.3.2606.28/DeepSound_2_3_1_Setup.msi">Download DeepSound 2.3 setup (June 2026)</a> and install DeepSound app or visit 
+<a href="https://github.com/Jpinsoft/DeepSound/releases">DeepSound Release page</a> and download assets manualy.
 
 #### What's new in DeepSound 2.3
 - open/play carrier audio file
 - new DeepSoundConsole (command-line) application
   
-<img width="1600" height="510" alt="What is new in DeepSound 2.3 Image" src="https://github.com/user-attachments/assets/567ca26a-ebd5-400b-8b92-3e54f891e226" />
+<img width="1600" height="510" alt="What is new in DeepSound 2.3 Image" src="https://github.com/user-attachments/assets/67fb9f3c-e52d-420c-a949-0ac866e5d922" />
 
 #### What's new in DeepSound 2.2
 - FIXED BUG: application crash during processing read-only file
