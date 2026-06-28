@@ -5,7 +5,7 @@ The application also enables you to extract secret files directly from audio fil
 
 ## Download DeepSound
 
-<a href="https://github.com/Jpinsoft/DeepSound/releases/download/v2.3.2606.21/DeepSound_2_3_2606_21_Setup.msi">Download DeepSound release 2.3 (June 2026)</a> and install DeepSound app
+<a href="https://github.com/Jpinsoft/DeepSound/releases/download/v2.3.2606.28/DeepSound_2_3_1_Setup.msi">Download DeepSound release 2.3 (June 2026)</a> and install DeepSound app
 
 #### What's new in DeepSound 2.3
 - open/play carrier audio file
